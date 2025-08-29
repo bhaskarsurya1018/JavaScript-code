@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dark or light</title>
+    <style>
+        .dark{
+            background-color: black;
+            color: wheat;
+        }
+        .light{
+            background-color: white;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <button id="but">click</button>
+    <p>hello hi</p>
+
+    <script>
+        let but=document.querySelector("#but");
+        let curmode = "light";
+        let body=document.querySelector("body");
+
+        but.addEventListener("click", ()=>{
+            if(curmode==="light"){
+                curmode = "dark";
+                body.classList.add("dark");
+                body.classList.remove("light");
+            }
+            else{
+                curmode= "light";
+                body.classList.add("light");
+                body.classList.remove("dark");
+            }
+
+            console.log(curmode);
+        })
+    </script>
+</body>
+</html>
