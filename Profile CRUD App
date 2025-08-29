@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile Manage</title>
+</head>
+
+<body>
+    <h2>User Profile Manager</h2>
+
+    <!-- Input fields -->
+    <input type="text" id="name" placeholder="Enter name">
+    <input type="number" id="age" placeholder="Enter age">
+    <input type="text" id="city" placeholder="Enter city">
+    <button onclick="addProfile()">Add Profile</button>
+
+    <!-- Profiles will appear here -->
+    <ul id="profileList"></ul>
+
+    <script>
+        let profiles = [];
+
+
+        function addProfile() {
+            let name = document.getElementById("name").value;
+            let age = document.getElementById("age").value;
+            let city = document.getElementById("city").value;
+
+            if (!name || !age || !city) {
+                alert("please fill the fildes");
+                return;
+            }
+
+            profiles.push({ name, age, city });
+
+            displayprofiles();
+
+            document.getElementById("name").value = "";
+            document.getElementById("age").value = "";
+            document.getElementById("city").value = "";
+        }
+
+        function deleteProfile(index) {
+            profiles.splice(index, 1);
+            displayprofiles();
+
+        }
+
+        function editProfile(index) {
+            let newname = prompt("enter new name:", profiles[index].name);
+            let newAge = prompt("Enter new age:", profiles[index].age);
+            let newCity = prompt("Enter new city:", profiles[index].city);
+
+            if (newname && newAge && newCity) {
+                profiles[index] = { name: newname, age: newAge, city: newCity };
+                displayprofiles();      
+            }
+        }
+
+        function displayprofiles() {
+                let list = document.getElementById("profileList");
+    list.innerHTML = "";
+
+            profiles.forEach((profile,index) => {                                                                
+            let li = document.createElement("li");
+            li.innerHTML = `
+            Hello ${profile.name}, Age: ${profile.age}, City: ${profile.city}
+        <button onclick="editProfile(${index})">Edit</button>
+        <button onclick="deleteProfile(${index})">Delete</button>`;
+            
+            list.appendChild(li);
+        
+        });
+    }
+    </script>
+</body>
+
+</html>
