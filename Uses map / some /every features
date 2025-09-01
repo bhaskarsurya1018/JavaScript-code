@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile Manager</title>
+</head>
+
+<body>
+    <input type="text" id="name" placeholder="Enter name">
+    <input type="number" id="age" placeholder="Enter age">
+    <input type="text" id="city" placeholder="Enter city">
+    <button onclick="addProfile()">Add Profile</button>
+    <br><br>
+
+    <input type="text" id="search" placeholder="enter the name or city " oninput="searchProfiles()"><br><br>
+    <button onclick="capitalizeNames()">Capitalize Names (map)</button>
+    <button onclick="checkMinors()">Any Minors? (some)</button>
+    <button onclick="checkAllAdults()">All Adults? (every)</button>
+
+    <ul id="profileList"></ul>
+
+    <script>
+        let profiles = [];
+
+        function addProfile() {
+            let name = document.getElementById("name").value.trim();
+            let age = document.getElementById("age").value.trim();
+            let city = document.getElementById("city").value.trim();
+
+            if (!name || !age || !city) {
+                alert("fill in the fields");
+                return;
+            }
+
+            let lowerName = name.toLowerCase();
+            let lowerCity = city.toLowerCase();
+
+            let exists = profiles.some(profile =>
+                profile.name.toLowerCase() === lowerName &&
+                profile.city.toLowerCase() === lowerCity
+            );
+
+            if (exists) {
+                alert("Profile already exists!");
+                return;
+            }
+
+            profiles.push({ name, age, city });
+
+            displayProfiles();
+
+            document.getElementById("name").value = "";
+            document.getElementById("age").value = "";
+            document.getElementById("city").value = "";
+
+
+        }
+
+
+        function deleteProfile(index) {
+            profiles.splice(index, 1);
+            displayProfiles();
+        }
+
+        function editProfile(index) {
+            let newname = prompt("emter the name ", profiles[index].name);
+            let newAge = prompt("emter the age ", profiles[index].age);
+            let newCity = prompt("emter the city ", profiles[index].city);
+
+            if (newname && newAge && newCity) {
+                profiles[index] = { name: newname, age: newAge, city: newCity };
+                displayProfiles();
+            }
+        }
+
+        function displayProfiles(filterprpfile = profiles) {
+            let list = document.getElementById("profileList");
+            list.innerHTML = "";
+
+            filterprpfile.forEach((profile, index) => {
+                let li = document.createElement("li");
+                li.innerHTML = `
+                Hello <b>${profile.name}</b>, Age: ${profile.age}, City: ${profile.city}
+                <button onclick="editProfile(${index})">Edit</button>
+                <button onclick="deleteProfile(${index})">Delete</button>`
+                list.appendChild(li);
+            });
+        }
+        function searchProfiles() {
+            let searchvalue = document.getElementById("search").value.toLowerCase();
+            let filtered = profiles.filter(profile =>
+                profile.name.toLowerCase().includes(searchvalue) ||
+                profile.city.toLowerCase().includes(searchvalue)
+            );
+            displayProfiles(filtered);
+        }
+
+        function capitalizeNames() {
+            profiles = profiles.map(profile => {
+                return {
+                     ...profile, // ... copy all term
+                    name: profile.name.charAt(0).toUpperCase() + profile.name.slice(1).toLowerCase()
+                };
+            });
+            displayProfiles();
+        }
+
+        function checkMinors() {
+            let hasMinor = profiles.some(profile => profile.age < 18);
+            alert(hasMinor ? "Yes, there are minors in the list!" : "No minors found!");
+        }
+
+        function checkAllAdults() {
+            let allAdults = profiles.every(profile => profile.age >= 18);
+            alert(allAdults ? "All users are adults!" : "Not everyone is an adult!");
+        }
+
+
+    </script>
+
+</body>
+
+</html>
